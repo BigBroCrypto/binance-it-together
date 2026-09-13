@@ -458,7 +458,7 @@ A: Some assets don't have Options/Quarterly on Binance yet. This shows the visio
 A: Yes! Copy the HTML file to any web server. Single file, zero dependencies.
 
 **Q: Can I trade with this?**  
-A: No. This is analysis/visualization only. No trading functionality.
+A: No. This is analysis/visualization only. No trading functionality as of now but in future a definite possibility.
 
 **Q: How do I add my own data?**  
 A: See ARCHITECTURE.md. You can integrate any REST/WebSocket data source.
@@ -489,14 +489,13 @@ A: See ARCHITECTURE.md. You can integrate any REST/WebSocket data source.
 
 - **Issues:** GitHub Issues (this repository)
 - **Discussions:** GitHub Discussions
-- **Security:** See SECURITY.md for responsible disclosure
 
 ---
 
 ## 👨‍💻 Built By
 
 A crypto trader who wanted to solve a real problem:
-**"Why do I need 5 apps to understand 1 asset?"**
+**"Why do I need multiple screens to understand 1 asset?"**
 
 **Answer:** You shouldn't. Here's proof.
 
