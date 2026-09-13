@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Binance It Together - Left Panel (Section-wise)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    background: radial-gradient(circle at 50% 0%, #1a1d0a 0%, #0b0b0e 55%, #050506 100%);
+    min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:24px 20px;
+  }
+  .header-section{ text-align:center; margin-bottom:16px; }
+  .header-title{ font-size:36px; font-weight:900; letter-spacing:-0.8px; margin-bottom:6px; }
+  .header-title-normal{ color:#eaecef; }
+  .header-title-highlight{ color:#f0b90b; }
+  .header-subtitle{ font-size:12px; color:#848e9c; letter-spacing:1.2px; text-transform:uppercase; font-weight:600; }
+
+  .device-frame{
+    width:440px; background:#0b0e11; border-radius:24px; overflow:hidden;
+    box-shadow:0 0 0 1px rgba(240,185,11,0.12), 0 24px 70px rgba(0,0,0,0.6), 0 0 90px rgba(240,185,11,0.05);
+    border:1px solid #1e2329; height:auto; display:flex; flex-direction:column;
+  }
+
+  /* TOP ROW: logo left, asset selection pills right */
+  .top-row{ display:flex; align-items:center; justify-content:space-between; padding:11px 13px 10px; border-bottom:1px solid #1e2329; flex:0 0 auto; }
+  .binance-logo{ display:flex; align-items:center; gap:7px; font-size:13px; font-weight:800; color:#fff; letter-spacing:0.5px; }
+  .logo-mark{ width:17px; height:17px; }
+  .logo-mark svg{ width:100%; height:100%; }
+
+  .asset-select-group{ display:flex; gap:6px; }
+  .select-pill{
+    display:flex; align-items:center; gap:5px; background:rgba(240,185,11,0.08); border:1px solid rgba(240,185,11,0.28);
+    padding:6px 9px; border-radius:20px; font-size:11px; font-weight:700; color:#f0b90b; cursor:pointer; position:relative;
+    transition:all .2s; user-select:none;
+  }
+  .select-pill:hover{ background:rgba(240,185,11,0.15); }
+  .select-pill .chev{ font-size:8px; opacity:0.8; transition:transform .2s; }
+  .select-pill.open .chev{ transform:rotate(180deg); }
+  .pill-icon{ width:15px; height:15px; border-radius:50%; background:#f0b90b; display:flex; align-items:center; justify-content:center; font-size:8px; color:#0b0e11; font-weight:800; }
+
+  .dropdown-list{
+    position:absolute; top:calc(100% + 6px); left:0; min-width:130px; background:#181a20; border:1px solid #2b3139;
+    border-radius:10px; padding:6px; box-shadow:0 12px 30px rgba(0,0,0,0.5); z-index:200; display:none;
+  }
+  .dropdown-list.show{ display:block; }
+  .dropdown-item{ padding:8px 10px; font-size:11px; font-weight:600; color:#c9cdd3; border-radius:6px; cursor:pointer; display:flex; align-items:center; justify-content:space-between; }
+  .dropdown-item:hover{ background:rgba(240,185,11,0.1); color:#f0b90b; }
+  .dropdown-item.sel{ color:#f0b90b; }
+  .dropdown-item .check{ font-size:10px; opacity:0; }
+  .dropdown-item.sel .check{ opacity:1; }
+
+  /* NO SCROLL - ALL SECTIONS VISIBLE */
+  .sections-scroll{ overflow:visible; padding:8px 10px 9px; display:flex; flex-direction:column; gap:6px; }
+
+  .market-section{ border-radius:11px; padding:7px 8px; border:1px solid; display:flex; flex-direction:column; overflow:hidden; }
+  .sec-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; flex:0 0 auto; }
+  .sec-head-left{ display:flex; align-items:center; gap:7px; }
+  .sec-dot{ width:7px; height:7px; border-radius:2px; }
+  .sec-name{ font-size:10.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; }
+  .sec-pair-pill{ display:flex; align-items:center; gap:5px; background:rgba(255,255,255,0.04); border:1px solid #2b3139; padding:3px 8px; border-radius:12px; font-size:9.5px; font-weight:700; color:#c9cdd3; }
+  .live-flag{ display:flex; align-items:center; gap:4px; font-size:8.5px; color:#0ecb81; font-weight:700; }
+  .live-dot{ width:5px; height:5px; border-radius:50%; background:#0ecb81; animation:pulse 1.6s infinite; }
+
+  /* CHART LEFT / METRICS RIGHT ROW */
+  .sec-body{ display:flex; gap:7px; flex:1; align-items:center; }
+  .sec-chart-col{ flex:1.15; min-width:0; display:flex; flex-direction:column; }
+  .sec-metrics-col{ flex:1; min-width:0; display:flex; flex-direction:column; gap:3px; justify-content:center; }
+
+  .chart-top-row{ display:flex; align-items:center; justify-content:space-between; margin-bottom:3px; }
+  .price-mini{ font-size:12.5px; font-weight:800; color:#eaecef; font-family:'Courier New',monospace; }
+  .interval-group{ display:flex; gap:2px; background:rgba(255,255,255,0.04); border-radius:5px; padding:1.5px; }
+  .interval-btn{ font-size:7px; font-weight:700; color:#5c6470; padding:2px 4px; border-radius:3px; cursor:pointer; }
+  .interval-btn.active{ background:#f0b90b; color:#0b0e11; }
+  .chart-svg-wrap{ width:100%; height:44px; background:rgba(255,255,255,0.015); border-radius:6px; }
+  .chart-footer-row{ display:flex; justify-content:space-between; font-size:6.5px; color:#5c6470; margin-top:2px; font-family:'Courier New',monospace; }
+  .change-mini{ font-size:7.5px; font-weight:700; }
+
+  .metric-item{ background:rgba(255,255,255,0.03); border-radius:5px; padding:3px 6px; display:flex; align-items:center; justify-content:space-between; gap:5px; }
+  .metric-label{ font-size:6.8px; color:#848e9c; text-transform:uppercase; letter-spacing:0.2px; font-weight:700; }
+  .metric-value{ font-size:9px; color:#eaecef; font-weight:800; font-family:'Courier New',monospace; }
+  .metric-value.up{ color:#0ecb81; }
+  .metric-value.down{ color:#f6465d; }
+
+  /* per-market accent colors */
+  .sec-spot{ background:rgba(14,203,129,0.045); border-color:rgba(14,203,129,0.16); }
+  .sec-spot .sec-name{ color:#0ecb81; } .sec-spot .sec-dot{ background:#0ecb81; }
+  .sec-perp{ background:rgba(0,180,255,0.045); border-color:rgba(0,180,255,0.16); }
+  .sec-perp .sec-name{ color:#4fc3f7; } .sec-perp .sec-dot{ background:#4fc3f7; }
+  .sec-quarterly{ background:rgba(240,185,11,0.045); border-color:rgba(240,185,11,0.2); }
+  .sec-quarterly .sec-name{ color:#f0b90b; } .sec-quarterly .sec-dot{ background:#f0b90b; }
+  .sec-options{ background:rgba(246,70,93,0.045); border-color:rgba(246,70,93,0.16); }
+  .sec-options .sec-name{ color:#f6465d; } .sec-options .sec-dot{ background:#f6465d; }
+
+  /* OPTION CHAIN */
+  .oc-summary{ display:grid; grid-template-columns:repeat(4,1fr); gap:3px; margin-bottom:5px; }
+  .oc-summary .metric-item{ flex-direction:column; align-items:flex-start; gap:1px; padding:3px 5px; }
+  .expiry-tabs{ display:flex; gap:3px; margin-bottom:5px; }
+  .expiry-tab{ flex:1; text-align:center; padding:4px 3px; font-size:7.5px; font-weight:800; color:#5c6470; background:rgba(255,255,255,0.03); border:1px solid #1e2329; border-radius:6px; cursor:pointer; }
+  .expiry-tab.active{ background:rgba(246,70,93,0.12); color:#f6465d; border-color:rgba(246,70,93,0.35); }
+  .oc-table-wrap{ background:rgba(255,255,255,0.015); border-radius:8px; padding:4px 4px 1px; max-height:104px; overflow-y:auto; }
+  .oc-header-row{ display:grid; grid-template-columns:1fr 0.7fr 1fr; font-size:7px; font-weight:800; letter-spacing:0.3px; color:#5c6470; padding:1px 2px 2px; }
+  .oc-call-hdr{ color:#0ecb81; text-align:left; }
+  .oc-strike-hdr{ text-align:center; }
+  .oc-put-hdr{ color:#f6465d; text-align:right; }
+  .oc-subheader-row{ display:grid; grid-template-columns:0.5fr 0.5fr 0.7fr 0.5fr 0.5fr; font-size:6px; color:#5c6470; padding:0 2px 1px; text-align:center; }
+  .oc-strike-sub{ visibility:hidden; }
+  .oc-rows{ display:flex; flex-direction:column; }
+  .oc-row{ display:grid; grid-template-columns:0.5fr 0.5fr 0.7fr 0.5fr 0.5fr; align-items:center; padding:2px 2px; border-radius:5px; font-family:'Courier New',monospace; font-size:8px; }
+  .oc-row:nth-child(odd){ background:rgba(255,255,255,0.015); }
+  .oc-row.atm{ background:rgba(240,185,11,0.1); }
+  .oc-call-iv{ color:#0ecb81; text-align:center; }
+  .oc-call-oi{ color:#a8afb8; text-align:center; }
+  .oc-strike{ text-align:center; font-weight:700; color:#eaecef; }
+  .oc-row.atm .oc-strike{ color:#f0b90b; font-weight:800; }
+  .oc-put-oi{ color:#a8afb8; text-align:center; }
+  .oc-put-iv{ color:#f6465d; text-align:center; }
+  .oc-note{ margin-top:3px; font-size:6.5px; color:#5c6470; text-align:center; }
+
+  /* NEWS & INSIGHTS SECTION (full width, no chart) */
+  .sec-news{ background:rgba(255,255,255,0.02); border-color:#1e2329; }
+  .sec-news .sec-name{ color:#eaecef; } .sec-news .sec-dot{ background:#eaecef; }
+  .news-list{ display:flex; flex-direction:column; gap:4px; }
+  .news-card{ background:rgba(255,255,255,0.025); border:1px solid #1e2329; border-radius:8px; padding:5px 7px; }
+  .news-card-top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:1px; }
+  .news-badge{ font-size:6.5px; padding:1.5px 5px; border-radius:4px; font-weight:800; }
+  .news-badge.bull{ background:rgba(14,203,129,0.15); color:#0ecb81; }
+  .news-badge.bear{ background:rgba(246,70,93,0.15); color:#f6465d; }
+  .news-badge.neu{ background:rgba(240,185,11,0.15); color:#f0b90b; }
+  .news-time{ font-size:6.5px; color:#5c6470; }
+  .news-headline{ font-size:8.7px; color:#eaecef; font-weight:600; line-height:1.25; margin-bottom:1px; }
+  .news-source{ font-size:6.5px; color:#5c6470; }
+
+  .insight-card{ margin-top:5px; background:linear-gradient(135deg, rgba(240,185,11,0.1), rgba(14,203,129,0.04)); border:1px solid rgba(240,185,11,0.2); border-radius:8px; padding:7px; }
+  .insight-title{ font-size:7.8px; font-weight:800; color:#f0b90b; text-transform:uppercase; letter-spacing:0.3px; margin-bottom:3px; display:flex; align-items:center; gap:4px; }
+  .insight-text{ font-size:8.3px; color:#c9cdd3; line-height:1.4; }
+  .insight-text strong{ color:#f0b90b; }
+
+  .screens-row{ display:flex; gap:18px; align-items:flex-start; }
+  .screen-label{ text-align:center; font-size:9.5px; font-weight:800; letter-spacing:1px; text-transform:uppercase; color:#5c6470; margin-bottom:8px; }
+  .screen-col{ display:flex; flex-direction:column; }
+
+  /* RIGHT SCREEN MINI-CHART CARDS */
+  .rs-chart-box{ width:100%; height:58px; background:rgba(255,255,255,0.015); border-radius:7px; }
+  .rs-row-two{ display:flex; gap:6px; }
+  .rs-half{ flex:1; min-width:0; }
+  .rs-mini-title{ font-size:6.8px; color:#848e9c; text-transform:uppercase; letter-spacing:0.3px; font-weight:700; margin-bottom:3px; }
+  .rs-legend{ display:flex; gap:8px; margin-top:3px; justify-content:center; }
+  .rs-legend-item{ display:flex; align-items:center; gap:3px; font-size:6.3px; color:#848e9c; font-weight:700; }
+  .rs-legend-dot{ width:5px; height:5px; border-radius:2px; }
+  .rs-table{ width:100%; border-collapse:collapse; margin-top:4px; }
+  .rs-table td{ font-size:7px; padding:2px 3px; font-family:'Courier New',monospace; color:#c9cdd3; }
+  .rs-table td.rs-label{ color:#848e9c; font-family:'Inter',sans-serif; font-weight:600; }
+  .rs-table td.rs-num{ text-align:right; font-weight:700; }
+
+  .ai-tab-card{ background:linear-gradient(135deg, rgba(240,185,11,0.1), rgba(14,203,129,0.04)); border:1px solid rgba(240,185,11,0.22); border-radius:8px; padding:8px; }
+  .ai-tab-head{ display:flex; align-items:center; gap:5px; margin-bottom:5px; }
+  .ai-tab-title{ font-size:8.5px; font-weight:800; color:#f0b90b; text-transform:uppercase; letter-spacing:0.3px; }
+  .ai-metric-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:4px; margin-bottom:6px; }
+  .ai-metric{ background:rgba(240,185,11,0.08); border:1px solid rgba(240,185,11,0.14); border-radius:6px; padding:4px 5px; text-align:center; }
+  .ai-metric-label{ font-size:6.3px; color:#848e9c; text-transform:uppercase; font-weight:700; }
+  .ai-metric-value{ font-size:9px; font-weight:800; color:#0ecb81; }
+  .ai-report-block{ background:rgba(14,203,129,0.06); border:1px solid rgba(14,203,129,0.12); border-radius:7px; padding:6px 7px; margin-bottom:4px; }
+  .ai-report-block:last-child{ margin-bottom:0; }
+  .ai-report-tag{ font-size:6.8px; font-weight:800; color:#f0b90b; text-transform:uppercase; letter-spacing:0.3px; margin-bottom:2px; }
+  .ai-report-text{ font-size:8px; color:#c9cdd3; line-height:1.4; }
+  .ai-report-text strong{ color:#eaecef; }
+
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.35;} }
+  .sections-scroll::-webkit-scrollbar{ width:4px; }
+  .sections-scroll::-webkit-scrollbar-thumb{ background:rgba(240,185,11,0.25); border-radius:2px; }
+
+  .foot-note{ flex:0 0 auto; margin:0 10px 10px; padding:6px 9px; border-radius:9px; background:rgba(255,255,255,0.02); border:1px dashed #262b31; font-size:6.8px; color:#5c6470; line-height:1.4; text-align:center; }
+</style>
+</head>
+<body>
+
+<div class="header-section">
+  <h1 class="header-title"><span class="header-title-normal">BINANCE IT</span> <span class="header-title-highlight">TOGETHER</span></h1>
+  <p class="header-subtitle">Foldable Dual Screen &bull; Left: Charts &amp; Ticker &bull; Right: Depth, Flow &amp; AI Analyst</p>
+</div>
+
+<div class="screens-row">
+<div class="screen-col">
+<div class="screen-label">Left Screen — Charts &amp; Metrics</div>
+<div class="device-frame">
+
+  <!-- TOP ROW: Binance header + asset selection pills -->
+  <div class="top-row">
+    <div class="binance-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 126.61 126.61" xmlns="http://www.w3.org/2000/svg">
+          <polygon fill="#f0b90b" points="38.73,53.2 63.31,28.62 87.9,53.21 102.17,38.94 63.31,0.08 24.46,38.93"/>
+          <rect fill="#f0b90b" x="4.34" y="53.2" width="20.12" height="20.12" transform="translate(-38.68 32.34) rotate(-45)"/>
+          <polygon fill="#f0b90b" points="38.73,73.41 63.31,97.99 87.9,73.4 102.17,87.66 102.17,87.67 63.31,126.53 24.46,87.68 24.45,87.67"/>
+          <rect fill="#f0b90b" x="101.6" y="53.68" width="20.12" height="20.12" transform="translate(-13.32 97.5) rotate(-45)"/>
+          <polygon fill="#f0b90b" points="77.83,63.31 77.85,63.29 63.31,48.75 52.58,59.48 51.34,60.71 48.79,63.26 48.77,63.29 48.79,63.31 63.31,77.86"/>
+        </svg>
+      </div>
+      BINANCE
+    </div>
+
+    <div class="asset-select-group">
+      <div class="select-pill" id="pillAsset" onclick="toggleDropdown('ddAsset', this)">
+        <span class="pill-icon">₿</span><span>BTC</span><span class="chev">▾</span>
+        <div class="dropdown-list" id="ddAsset">
+          <div class="dropdown-item sel" onclick="pickAsset(event,'BTC')"><span>BTC</span><span class="check">✓</span></div>
+          <div class="dropdown-item" onclick="pickAsset(event,'ETH')"><span>ETH</span><span class="check">✓</span></div>
+          <div class="dropdown-item" onclick="pickAsset(event,'SOL')"><span>SOL</span><span class="check">✓</span></div>
+          <div class="dropdown-item" onclick="pickAsset(event,'BNB')"><span>BNB</span><span class="check">✓</span></div>
+          <div class="dropdown-item" onclick="pickAsset(event,'XRP')"><span>XRP</span><span class="check">✓</span></div>
+          <div class="dropdown-item" onclick="pickAsset(event,'ADA')"><span>ADA</span><span class="check">✓</span></div>
+          <div class="dropdown-item" onclick="pickAsset(event,'DOGE')"><span>DOGE</span><span class="check">✓</span></div>
+          <div class="dropdown-item" onclick="pickAsset(event,'LINK')"><span>LINK</span><span class="check">✓</span></div>
+        </div>
+      </div>
+      <div class="select-pill" id="pillQuote" onclick="toggleDropdown('ddQuote', this)">
+        <span>/USDT</span><span class="chev">▾</span>
+        <div class="dropdown-list" id="ddQuote">
+          <div class="dropdown-item sel" onclick="pickQuote(event,'USDT')"><span>USDT</span><span class="check">✓</span></div>
+          <div class="dropdown-item" onclick="pickQuote(event,'FDUSD')"><span>FDUSD</span><span class="check">✓</span></div>
+          <div class="dropdown-item" onclick="pickQuote(event,'USDC')"><span>USDC</span><span class="check">✓</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALL SECTIONS OPEN AT ONCE, STACKED VERTICALLY -->
+  <div class="sections-scroll">
+
+    <!-- ============ SPOT SECTION ============ -->
+    <div class="market-section sec-spot">
+      <div class="sec-head">
+        <div class="sec-head-left"><span class="sec-dot"></span><span class="sec-name">Spot</span><span class="sec-pair-pill" id="spot-pair">₿ BTC/USDT</span></div>
+        <div class="live-flag" id="flag-spot"><span class="live-dot"></span>LIVE</div>
+      </div>
+      <div class="sec-body">
+        <div class="sec-chart-col">
+          <div class="chart-top-row">
+            <div><div class="price-mini" id="spot-price">77,284.01</div><div class="change-mini" id="spot-change" style="color:#0ecb81;">+0.02%</div></div>
+            <div class="interval-group" data-chart="spot">
+              <div class="interval-btn" data-int="15m">15m</div>
+              <div class="interval-btn active" data-int="1h">1H</div>
+              <div class="interval-btn" data-int="4h">4H</div>
+            </div>
+          </div>
+          <div class="chart-svg-wrap" id="chart-spot"></div>
+          <div class="chart-footer-row"><span id="chart-spot-lo">-</span><span id="chart-spot-hi">-</span></div>
+        </div>
+        <div class="sec-metrics-col">
+          <div class="metric-item"><span class="metric-label">24H High</span><span class="metric-value up" id="spot-high">79,890</span></div>
+          <div class="metric-item"><span class="metric-label">24H Low</span><span class="metric-value down" id="spot-low">76,046</span></div>
+          <div class="metric-item"><span class="metric-label" id="spot-vol-label">Vol (BTC)</span><span class="metric-value" id="spot-volbtc">18,933.97</span></div>
+          <div class="metric-item"><span class="metric-label">Vol (USDT)</span><span class="metric-value" id="spot-volusdt">1.47B</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ PERPETUALS SECTION ============ -->
+    <div class="market-section sec-perp">
+      <div class="sec-head">
+        <div class="sec-head-left"><span class="sec-dot"></span><span class="sec-name">Perp</span><span class="sec-pair-pill" id="perp-pair">⚡ BTC/USDT</span></div>
+        <div class="live-flag" id="flag-perp"><span class="live-dot"></span>LIVE</div>
+      </div>
+      <div class="sec-body">
+        <div class="sec-chart-col">
+          <div class="chart-top-row">
+            <div><div class="price-mini" id="perp-price">—</div><div class="change-mini" style="color:#848e9c;">Mark Price</div></div>
+            <div class="interval-group" data-chart="perp">
+              <div class="interval-btn" data-int="15m">15m</div>
+              <div class="interval-btn active" data-int="1h">1H</div>
+              <div class="interval-btn" data-int="4h">4H</div>
+            </div>
+          </div>
+          <div class="chart-svg-wrap" id="chart-perp"></div>
+          <div class="chart-footer-row"><span id="chart-perp-lo">-</span><span id="chart-perp-hi">-</span></div>
+        </div>
+        <div class="sec-metrics-col">
+          <div class="metric-item"><span class="metric-label">Funding</span><span class="metric-value up" id="perp-funding">—</span></div>
+          <div class="metric-item"><span class="metric-label">Open Int.</span><span class="metric-value" id="perp-oi">—</span></div>
+          <div class="metric-item"><span class="metric-label">Long/Short</span><span class="metric-value" id="perp-ls">—</span></div>
+          <div class="metric-item"><span class="metric-label">Liq (24H)</span><span class="metric-value down" id="perp-liq">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ QUARTERLY FUTURES SECTION ============ -->
+    <div class="market-section sec-quarterly">
+      <div class="sec-head">
+        <div class="sec-head-left"><span class="sec-dot"></span><span class="sec-name">Quarterly</span><span class="sec-pair-pill" id="quarterly-label">📅 —</span></div>
+        <div class="live-flag" id="flag-quarterly"><span class="live-dot"></span>LIVE</div>
+      </div>
+      <div class="sec-body">
+        <div class="sec-chart-col">
+          <div class="chart-top-row">
+            <div><div class="price-mini" id="quarterly-price">—</div><div class="change-mini" id="quarterly-basis" style="color:#848e9c;">Basis —</div></div>
+            <div class="interval-group" data-chart="quarterly">
+              <div class="interval-btn" data-int="15m">15m</div>
+              <div class="interval-btn active" data-int="1h">1H</div>
+              <div class="interval-btn" data-int="4h">4H</div>
+            </div>
+          </div>
+          <div class="chart-svg-wrap" id="chart-quarterly"></div>
+          <div class="chart-footer-row"><span id="chart-quarterly-lo">-</span><span id="chart-quarterly-hi">-</span></div>
+        </div>
+        <div class="sec-metrics-col">
+          <div class="metric-item"><span class="metric-label">Annualized</span><span class="metric-value up" id="quarterly-annualized">—</span></div>
+          <div class="metric-item"><span class="metric-label">Open Int.</span><span class="metric-value" id="quarterly-oi">—</span></div>
+          <div class="metric-item"><span class="metric-label">Structure</span><span class="metric-value" id="quarterly-structure">—</span></div>
+          <div class="metric-item"><span class="metric-label">Expiry</span><span class="metric-value" id="quarterly-expiry" style="font-size:9px;">26-12-25</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ OPTIONS SECTION — OPTION CHAIN ============ -->
+    <div class="market-section sec-options">
+      <div class="sec-head">
+        <div class="sec-head-left"><span class="sec-dot"></span><span class="sec-name">Options</span><span class="sec-pair-pill" id="options-pair">📊 BTC Chain</span></div>
+        <div class="live-flag"><span class="live-dot"></span>LIVE</div>
+      </div>
+
+      <!-- top summary strip -->
+      <div class="oc-summary">
+        <div class="metric-item"><span class="metric-label">Put/Call</span><span class="metric-value" id="oc-putcall">0.74</span></div>
+        <div class="metric-item"><span class="metric-label">Max Pain</span><span class="metric-value" id="oc-maxpain">76,000</span></div>
+        <div class="metric-item"><span class="metric-label">Net GEX</span><span class="metric-value up" id="oc-gex">+0.9B</span></div>
+        <div class="metric-item"><span class="metric-label">25Δ Skew</span><span class="metric-value down" id="oc-skew">-3.2%</span></div>
+      </div>
+
+      <!-- expiry tabs -->
+      <div class="expiry-tabs" id="expiryTabs">
+        <div class="expiry-tab active" data-exp="1226">26 Dec</div>
+        <div class="expiry-tab" data-exp="0127">27 Jan</div>
+        <div class="expiry-tab" data-exp="0327">27 Mar</div>
+        <div class="expiry-tab" data-exp="0627">27 Jun</div>
+      </div>
+
+      <!-- option chain table -->
+      <div class="oc-table-wrap">
+        <div class="oc-header-row">
+          <span class="oc-col oc-call-hdr">CALLS</span>
+          <span class="oc-col oc-strike-hdr">STRIKE</span>
+          <span class="oc-col oc-put-hdr">PUTS</span>
+        </div>
+        <div class="oc-subheader-row">
+          <span class="oc-sub">IV</span><span class="oc-sub">OI</span>
+          <span class="oc-sub oc-strike-sub"> </span>
+          <span class="oc-sub">OI</span><span class="oc-sub">IV</span>
+        </div>
+        <div id="oc-rows" class="oc-rows"></div>
+      </div>
+      <div class="oc-note">Strike in bold = nearest to spot (ATM) &bull; OI in contracts</div>
+    </div>
+
+    <!-- ============ MARKET NEWS & INSIGHTS SECTION ============ -->
+    <div class="market-section sec-news">
+      <div class="sec-head">
+        <div class="sec-head-left"><span class="sec-dot"></span><span class="sec-name">Market News &amp; Insights</span><span class="sec-pair-pill" id="news-pair">₿ BTC</span></div>
+        <div class="live-flag" style="color:#848e9c;"><span class="live-dot" style="background:#848e9c;"></span>UPDATED</div>
+      </div>
+      <div class="news-list">
+        <div class="news-card">
+          <div class="news-card-top"><span class="news-badge bull">Bullish</span><span class="news-time">2h ago</span></div>
+          <div class="news-headline">Spot holds above 77K as 24h range compresses to 4.7%</div>
+          <div class="news-source">Market Data &bull; Binance</div>
+        </div>
+        <div class="news-card">
+          <div class="news-card-top"><span class="news-badge neu">Neutral</span><span class="news-time">4h ago</span></div>
+          <div class="news-headline">Perp funding stays flat near zero — no crowding either side</div>
+          <div class="news-source">Derivatives Desk</div>
+        </div>
+        <div class="news-card">
+          <div class="news-card-top"><span class="news-badge bull">Bullish</span><span class="news-time">6h ago</span></div>
+          <div class="news-headline">Quarterly basis holds contango — spot demand steady into year-end</div>
+          <div class="news-source">Futures Desk</div>
+        </div>
+        <div class="news-card">
+          <div class="news-card-top"><span class="news-badge bear">Bearish</span><span class="news-time">9h ago</span></div>
+          <div class="news-headline">Options dealers sit short gamma above 76K — expect chop</div>
+          <div class="news-source">Options Desk</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="foot-note">
+    Spot, Perp mark/funding/OI &amp; Quarterly basis auto-refresh every 15s directly from Binance public REST (client-side, in your browser) &bull; option chain still illustrative
+  </div>
+</div>
+</div>
+
+<!-- ================= RIGHT SCREEN ================= -->
+<div class="screen-col">
+<div class="screen-label">Right Screen — Flow, Depth &amp; AI Analyst</div>
+<div class="device-frame">
+
+  <div class="top-row">
+    <div class="binance-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 126.61 126.61" xmlns="http://www.w3.org/2000/svg">
+          <polygon fill="#f0b90b" points="38.73,53.2 63.31,28.62 87.9,53.21 102.17,38.94 63.31,0.08 24.46,38.93"/>
+          <rect fill="#f0b90b" x="4.34" y="53.2" width="20.12" height="20.12" transform="translate(-38.68 32.34) rotate(-45)"/>
+          <polygon fill="#f0b90b" points="38.73,73.41 63.31,97.99 87.9,73.4 102.17,87.66 102.17,87.67 63.31,126.53 24.46,87.68 24.45,87.67"/>
+          <rect fill="#f0b90b" x="101.6" y="53.68" width="20.12" height="20.12" transform="translate(-13.32 97.5) rotate(-45)"/>
+          <polygon fill="#f0b90b" points="77.83,63.31 77.85,63.29 63.31,48.75 52.58,59.48 51.34,60.71 48.79,63.26 48.77,63.29 48.79,63.31 63.31,77.86"/>
+        </svg>
+      </div>
+      BINANCE
+    </div>
+    <div class="sec-pair-pill" id="right-top-pair">₿ BTC/USDT &bull; Analytics</div>
+  </div>
+
+  <div class="sections-scroll">
+
+    <!-- SPOT (right) — Money Flow + Inflow -->
+    <div class="market-section sec-spot">
+      <div class="sec-head">
+        <div class="sec-head-left"><span class="sec-dot"></span><span class="sec-name">Spot</span><span class="sec-pair-pill">Money Flow</span></div>
+        <div class="live-flag" style="color:#848e9c;">ILLUSTRATIVE</div>
+      </div>
+      <div class="rs-row-two">
+        <div class="rs-half">
+          <div class="rs-mini-title">Buy / Sell Split</div>
+          <div class="rs-chart-box" id="donut-spot"></div>
+          <div class="rs-legend">
+            <div class="rs-legend-item"><span class="rs-legend-dot" style="background:#0ecb81;"></span>Buy 51%</div>
+            <div class="rs-legend-item"><span class="rs-legend-dot" style="background:#f6465d;"></span>Sell 49%</div>
+          </div>
+        </div>
+        <div class="rs-half">
+          <div class="rs-mini-title" id="inflow-title">24H Money Inflow (BTC)</div>
+          <div class="rs-chart-box" id="line-inflow"></div>
+        </div>
+      </div>
+      <table class="rs-table">
+        <tr><td class="rs-label">Large Orders Inflow</td><td class="rs-num" style="color:#0ecb81;">+633.24</td></tr>
+        <tr><td class="rs-label">Total Net Inflow</td><td class="rs-num" style="color:#0ecb81;">+350.07</td></tr>
+      </table>
+    </div>
+
+    <!-- PERP (right) — Basis/Funding + Whales -->
+    <div class="market-section sec-perp">
+      <div class="sec-head">
+        <div class="sec-head-left"><span class="sec-dot"></span><span class="sec-name">Perp</span><span class="sec-pair-pill">Basis &amp; Whales</span></div>
+        <div class="live-flag" style="color:#848e9c;">ILLUSTRATIVE</div>
+      </div>
+      <div class="rs-row-two">
+        <div class="rs-half">
+          <div class="rs-mini-title">Funding Rate (14D)</div>
+          <div class="rs-chart-box" id="line-funding"></div>
+        </div>
+        <div class="rs-half">
+          <div class="rs-mini-title">Basis Curve</div>
+          <div class="rs-chart-box" id="line-basis"></div>
+        </div>
+      </div>
+      <table class="rs-table">
+        <tr><td class="rs-label">Whale Long / Short</td><td class="rs-num">614 / 401</td></tr>
+        <tr><td class="rs-label">Whale Notional L/S</td><td class="rs-num">132.7%</td></tr>
+      </table>
+    </div>
+
+    <!-- QUARTERLY (right) — L/S Ratio + OI -->
+    <div class="market-section sec-quarterly">
+      <div class="sec-head">
+        <div class="sec-head-left"><span class="sec-dot"></span><span class="sec-name">Quarterly</span><span class="sec-pair-pill">Positioning</span></div>
+        <div class="live-flag" style="color:#848e9c;">ILLUSTRATIVE</div>
+      </div>
+      <div class="rs-row-two">
+        <div class="rs-half">
+          <div class="rs-mini-title">Long/Short Ratio</div>
+          <div class="rs-chart-box" id="bars-ls"></div>
+        </div>
+        <div class="rs-half">
+          <div class="rs-mini-title" id="oi-chart-title">Open Interest (BTC)</div>
+          <div class="rs-chart-box" id="bars-oi"></div>
+        </div>
+      </div>
+      <table class="rs-table">
+        <tr><td class="rs-label">Top Trader L/S</td><td class="rs-num">1.56</td></tr>
+        <tr><td class="rs-label">Taker Buy/Sell Vol</td><td class="rs-num" style="color:#0ecb81;">Buy-led</td></tr>
+      </table>
+    </div>
+
+    <!-- OPTIONS (right) — Pie + Skew -->
+    <div class="market-section sec-options">
+      <div class="sec-head">
+        <div class="sec-head-left"><span class="sec-dot"></span><span class="sec-name">Options</span><span class="sec-pair-pill">Put/Call &amp; Skew</span></div>
+        <div class="live-flag" style="color:#848e9c;">ILLUSTRATIVE</div>
+      </div>
+      <div class="rs-row-two">
+        <div class="rs-half">
+          <div class="rs-mini-title">Put/Call OI Split</div>
+          <div class="rs-chart-box" id="pie-options"></div>
+          <div class="rs-legend">
+            <div class="rs-legend-item"><span class="rs-legend-dot" style="background:#0ecb81;"></span>Calls 57%</div>
+            <div class="rs-legend-item"><span class="rs-legend-dot" style="background:#f6465d;"></span>Puts 43%</div>
+          </div>
+        </div>
+        <div class="rs-half">
+          <div class="rs-mini-title">25Δ Skew Curve</div>
+          <div class="rs-chart-box" id="skew-curve"></div>
+        </div>
+      </div>
+      <table class="rs-table">
+        <tr><td class="rs-label">Skew Bias</td><td class="rs-num" style="color:#f6465d;">Put-skewed</td></tr>
+        <tr><td class="rs-label">IV Term Structure</td><td class="rs-num">Upward</td></tr>
+      </table>
+    </div>
+
+    <!-- AI ANALYST (right, against Market News & Insights on left) -->
+    <div class="market-section sec-news">
+      <div class="sec-head">
+        <div class="sec-head-left"><span class="sec-dot" style="background:#f0b90b;"></span><span class="sec-name" style="color:#f0b90b;">AI Analyst</span><span class="sec-pair-pill" id="ai-analyst-pair">₿ BTC Full Report</span></div>
+        <div class="live-flag"><span class="live-dot"></span>LIVE</div>
+      </div>
+      <div class="ai-tab-card">
+        <div class="ai-tab-head">🤖 <span class="ai-tab-title">Cross-Market Synthesis</span></div>
+        <div class="ai-metric-row">
+          <div class="ai-metric"><div class="ai-metric-label">Regime</div><div class="ai-metric-value" style="color:#f0b90b;">Range</div></div>
+          <div class="ai-metric"><div class="ai-metric-label">Bias</div><div class="ai-metric-value">Neu-Bull</div></div>
+          <div class="ai-metric"><div class="ai-metric-label">Confidence</div><div class="ai-metric-value">64/100</div></div>
+        </div>
+        <div class="ai-report-block">
+          <div class="ai-report-tag">Spot + Flow</div>
+          <div class="ai-report-text">Price flat +0.02% with buy/sell orderflow split near 51/49 — <strong>no directional conviction</strong> from spot tape yet.</div>
+        </div>
+        <div class="ai-report-block">
+          <div class="ai-report-tag">Perp + Whales</div>
+          <div class="ai-report-text">Funding near-zero, 614 whale longs vs 401 shorts (both currently underwater) — <strong>positioning is stretched but not crowded</strong>.</div>
+        </div>
+        <div class="ai-report-block">
+          <div class="ai-report-tag">Quarterly Curve</div>
+          <div class="ai-report-text">Mild contango holds, top-trader long/short ticking back up to 1.56 — <strong>steady carry demand into year-end</strong>.</div>
+        </div>
+        <div class="ai-report-block">
+          <div class="ai-report-tag">Options Desk</div>
+          <div class="ai-report-text">Put-skewed IV with dealers modestly short gamma above 76K — <strong>expect chop, fade the extremes</strong> until skew flattens.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="foot-note">
+    Money flow, whales, positioning &amp; options greeks are illustrative — Binance MCP currently exposes spot/futures price &amp; kline data only
+  </div>
+</div>
+</div>
+</div>
+
+<script>
+const RAW = {
+  "15m": [[1789157700000, "77458.90000000", "77458.90000000", "77375.99000000", "77384.00000000"], [1789158600000, "77384.00000000", "77458.01000000", "77273.50000000", "77408.00000000"], [1789159500000, "77408.01000000", "77411.28000000", "77192.00000000", "77339.33000000"], [1789160400000, "77339.33000000", "77424.01000000", "77328.57000000", "77362.68000000"], [1789161300000, "77362.68000000", "77422.71000000", "77356.00000000", "77361.18000000"], [1789162200000, "77361.17000000", "77396.01000000", "77338.00000000", "77340.01000000"], [1789163100000, "77340.01000000", "77348.01000000", "77078.01000000", "77108.01000000"], [1789164000000, "77108.01000000", "77184.00000000", "76967.13000000", "77184.00000000"], [1789164900000, "77184.00000000", "77231.31000000", "77100.33000000", "77120.47000000"], [1789165800000, "77120.00000000", "77200.01000000", "76996.00000000", "77118.11000000"], [1789166700000, "77118.10000000", "77171.00000000", "76994.22000000", "77150.00000000"], [1789167600000, "77150.00000000", "77210.00000000", "77119.68000000", "77119.69000000"], [1789168500000, "77119.69000000", "77190.01000000", "77119.68000000", "77190.00000000"], [1789169400000, "77190.00000000", "77220.00000000", "77152.01000000", "77184.01000000"], [1789170300000, "77184.02000000", "77225.71000000", "77172.84000000", "77225.70000000"], [1789171200000, "77225.71000000", "77304.29000000", "77207.65000000", "77304.07000000"], [1789172100000, "77304.06000000", "77308.00000000", "77279.90000000", "77279.91000000"], [1789173000000, "77279.91000000", "77290.01000000", "77248.13000000", "77288.76000000"], [1789173900000, "77288.77000000", "77320.00000000", "77276.00000000", "77287.43000000"], [1789174800000, "77287.43000000", "77365.88000000", "77262.29000000", "77365.88000000"], [1789175700000, "77365.87000000", "77378.37000000", "77300.00000000", "77329.08000000"], [1789176600000, "77329.61000000", "77329.61000000", "77264.01000000", "77277.03000000"], [1789177500000, "77277.02000000", "77337.61000000", "77272.00000000", "77272.37000000"], [1789178400000, "77272.36000000", "77319.97000000", "77272.36000000", "77306.01000000"], [1789179300000, "77306.01000000", "77322.27000000", "77286.00000000", "77286.09000000"], [1789180200000, "77286.09000000", "77286.89000000", "77220.00000000", "77234.72000000"], [1789181100000, "77234.73000000", "77311.98000000", "77220.00000000", "77288.00000000"], [1789182000000, "77288.01000000", "77347.82000000", "77250.89000000", "77281.03000000"], [1789182900000, "77281.02000000", "77309.11000000", "77229.99000000", "77287.69000000"], [1789183800000, "77287.69000000", "77290.01000000", "77244.00000000", "77246.01000000"], [1789184700000, "77246.01000000", "77268.09000000", "77238.00000000", "77268.09000000"], [1789185600000, "77268.09000000", "77314.01000000", "77268.08000000", "77294.00000000"], [1789186500000, "77294.01000000", "77294.01000000", "77226.07000000", "77252.01000000"], [1789187400000, "77252.01000000", "77293.77000000", "77219.99000000", "77251.50000000"], [1789188300000, "77251.50000000", "77258.36000000", "77215.86000000", "77222.75000000"], [1789189200000, "77222.75000000", "77257.99000000", "77164.06000000", "77233.78000000"], [1789190100000, "77233.78000000", "77258.01000000", "77196.00000000", "77202.01000000"], [1789191000000, "77202.00000000", "77260.01000000", "77201.38000000", "77240.00000000"], [1789191900000, "77239.99000000", "77260.80000000", "77218.00000000", "77218.00000000"], [1789192800000, "77218.00000000", "77229.44000000", "77199.99000000", "77209.94000000"], [1789193700000, "77209.95000000", "77239.01000000", "77209.94000000", "77239.00000000"], [1789194600000, "77239.01000000", "77316.41000000", "77239.00000000", "77316.41000000"], [1789195500000, "77316.40000000", "77359.20000000", "77289.71000000", "77289.73000000"], [1789196400000, "77289.73000000", "77347.99000000", "77289.72000000", "77342.54000000"], [1789197300000, "77342.55000000", "77343.95000000", "77310.09000000", "77311.10000000"], [1789198200000, "77311.10000000", "77311.10000000", "77284.00000000", "77286.48000000"], [1789199100000, "77286.48000000", "77298.87000000", "77266.00000000", "77269.55000000"], [1789200000000, "77269.54000000", "77276.93000000", "77269.54000000", "77276.02000000"]],
+  "1h": [[1789030800000, "78110.00000000", "78229.22000000", "77910.86000000", "77992.01000000"], [1789034400000, "77992.00000000", "78044.57000000", "77821.21000000", "77863.21000000"], [1789038000000, "77863.20000000", "78054.84000000", "77688.00000000", "77840.80000000"], [1789041600000, "77840.64000000", "77959.20000000", "76676.07000000", "76896.01000000"], [1789045200000, "76896.01000000", "77234.00000000", "76745.00000000", "77174.44000000"], [1789048800000, "77174.43000000", "77424.98000000", "76943.45000000", "77412.01000000"], [1789052400000, "77412.01000000", "77412.89000000", "77092.16000000", "77250.00000000"], [1789056000000, "77250.00000000", "77312.01000000", "76804.99000000", "77200.01000000"], [1789059600000, "77200.00000000", "77544.00000000", "77126.26000000", "77328.72000000"], [1789063200000, "77328.72000000", "77340.00000000", "76982.60000000", "77252.00000000"], [1789066800000, "77252.00000000", "77298.48000000", "77083.17000000", "77160.83000000"], [1789070400000, "77160.83000000", "77347.45000000", "77116.00000000", "77268.08000000"], [1789074000000, "77268.08000000", "77303.02000000", "77100.02000000", "77144.00000000"], [1789077600000, "77144.01000000", "77218.01000000", "76817.60000000", "76836.45000000"], [1789081200000, "76836.45000000", "76876.31000000", "76464.00000000", "76568.72000000"], [1789084800000, "76568.73000000", "76939.80000000", "76563.01000000", "76908.59000000"], [1789088400000, "76908.59000000", "77000.00000000", "76670.57000000", "76971.43000000"], [1789092000000, "76971.44000000", "77013.62000000", "76769.69000000", "76838.68000000"], [1789095600000, "76838.68000000", "76897.54000000", "76702.70000000", "76891.80000000"], [1789099200000, "76891.81000000", "77196.01000000", "76889.23000000", "77114.01000000"], [1789102800000, "77114.01000000", "77252.88000000", "77069.06000000", "77252.86000000"], [1789106400000, "77252.87000000", "77431.48000000", "77182.00000000", "77298.01000000"], [1789110000000, "77298.01000000", "77403.19000000", "77203.73000000", "77230.70000000"], [1789113600000, "77230.70000000", "77500.00000000", "77144.59000000", "77364.93000000"], [1789117200000, "77364.94000000", "77370.01000000", "76865.58000000", "77042.00000000"], [1789120800000, "77042.00000000", "77163.25000000", "76966.00000000", "76993.25000000"], [1789124400000, "76993.25000000", "77049.25000000", "76746.95000000", "77036.12000000"], [1789128000000, "77036.12000000", "78148.74000000", "76046.58000000", "78032.99000000"], [1789131600000, "78032.98000000", "79333.00000000", "77253.80000000", "79242.56000000"], [1789135200000, "79242.56000000", "79890.00000000", "78509.09000000", "78798.51000000"], [1789138800000, "78798.40000000", "78849.98000000", "77303.00000000", "77732.25000000"], [1789142400000, "77732.25000000", "78068.01000000", "77381.88000000", "77916.00000000"], [1789146000000, "77916.00000000", "77960.01000000", "77490.34000000", "77534.00000000"], [1789149600000, "77534.00000000", "77538.01000000", "76883.00000000", "77054.00000000"], [1789153200000, "77054.00000000", "77372.01000000", "77006.00000000", "77286.01000000"], [1789156800000, "77286.00000000", "77504.01000000", "77192.00000000", "77339.33000000"], [1789160400000, "77339.33000000", "77424.01000000", "77078.01000000", "77108.01000000"], [1789164000000, "77108.01000000", "77231.31000000", "76967.13000000", "77150.00000000"], [1789167600000, "77150.00000000", "77225.71000000", "77119.68000000", "77225.70000000"], [1789171200000, "77225.71000000", "77320.00000000", "77207.65000000", "77287.43000000"], [1789174800000, "77287.43000000", "77378.37000000", "77262.29000000", "77272.37000000"], [1789178400000, "77272.36000000", "77322.27000000", "77220.00000000", "77288.00000000"], [1789182000000, "77288.01000000", "77347.82000000", "77229.99000000", "77268.09000000"], [1789185600000, "77268.09000000", "77314.01000000", "77215.86000000", "77222.75000000"], [1789189200000, "77222.75000000", "77260.80000000", "77164.06000000", "77218.00000000"], [1789192800000, "77218.00000000", "77359.20000000", "77199.99000000", "77289.73000000"], [1789196400000, "77289.73000000", "77347.99000000", "77266.00000000", "77269.55000000"], [1789200000000, "77269.54000000", "77276.93000000", "77269.54000000", "77276.01000000"]],
+  "4h": [[1788523200000, "81224.86000000", "81350.00000000", "78660.00000000", "79429.33000000"], [1788537600000, "79429.33000000", "79877.07000000", "79378.19000000", "79793.34000000"], [1788552000000, "79793.35000000", "79862.15000000", "79512.00000000", "79660.77000000"], [1788566400000, "79660.77000000", "79721.57000000", "79472.22000000", "79582.00000000"], [1788580800000, "79581.99000000", "79763.41000000", "79442.00000000", "79709.96000000"], [1788595200000, "79709.96000000", "79735.97000000", "79568.00000000", "79609.28000000"], [1788609600000, "79609.29000000", "79816.00000000", "79545.96000000", "79806.01000000"], [1788624000000, "79806.00000000", "80200.00000000", "79712.86000000", "79754.00000000"], [1788638400000, "79753.99000000", "79947.99000000", "79694.00000000", "79831.75000000"], [1788652800000, "79831.75000000", "80107.99000000", "79829.98000000", "80028.01000000"], [1788667200000, "80028.01000000", "80107.99000000", "79577.00000000", "79805.00000000"], [1788681600000, "79804.68000000", "80020.00000000", "79752.70000000", "79919.17000000"], [1788696000000, "79919.17000000", "80010.00000000", "79233.00000000", "79716.50000000"], [1788710400000, "79716.51000000", "79970.00000000", "79584.73000000", "79829.99000000"], [1788724800000, "79830.00000000", "80559.99000000", "79647.04000000", "80341.83000000"], [1788739200000, "80341.83000000", "80443.99000000", "79568.60000000", "79596.39000000"], [1788753600000, "79596.38000000", "79926.04000000", "79001.10000000", "79397.83000000"], [1788768000000, "79397.83000000", "79550.00000000", "79282.00000000", "79420.16000000"], [1788782400000, "79420.16000000", "79643.50000000", "78680.00000000", "78821.99000000"], [1788796800000, "78822.00000000", "79419.17000000", "78807.69000000", "79365.82000000"], [1788811200000, "79365.81000000", "79394.92000000", "78781.07000000", "79112.01000000"], [1788825600000, "79112.00000000", "79485.00000000", "78725.10000000", "78906.28000000"], [1788840000000, "78906.27000000", "78929.24000000", "78179.98000000", "78482.00000000"], [1788854400000, "78482.00000000", "78994.50000000", "78271.63000000", "78430.01000000"], [1788868800000, "78430.00000000", "78910.88000000", "77620.01000000", "78904.00000000"], [1788883200000, "78904.00000000", "78978.39000000", "78271.49000000", "78446.00000000"], [1788897600000, "78445.99000000", "78662.75000000", "78406.00000000", "78455.80000000"], [1788912000000, "78455.80000000", "78928.65000000", "78455.79000000", "78638.01000000"], [1788926400000, "78638.01000000", "79400.00000000", "78638.00000000", "79277.43000000"], [1788940800000, "79277.44000000", "79760.00000000", "78725.29000000", "79324.75000000"], [1788955200000, "79324.75000000", "79678.84000000", "78060.03000000", "78596.70000000"], [1788969600000, "78596.70000000", "78938.55000000", "78150.00000000", "78234.94000000"], [1788984000000, "78234.94000000", "78340.01000000", "77770.00000000", "78306.43000000"], [1788998400000, "78306.43000000", "78550.00000000", "77952.00000000", "78328.08000000"], [1789012800000, "78328.08000000", "78564.39000000", "77906.48000000", "78112.00000000"], [1789027200000, "78112.00000000", "78229.22000000", "77688.00000000", "77840.80000000"], [1789041600000, "77840.64000000", "77959.20000000", "76676.07000000", "77250.00000000"], [1789056000000, "77250.00000000", "77544.00000000", "76804.99000000", "77160.83000000"], [1789070400000, "77160.83000000", "77347.45000000", "76464.00000000", "76568.72000000"], [1789084800000, "76568.73000000", "77013.62000000", "76563.01000000", "76891.80000000"], [1789099200000, "76891.81000000", "77431.48000000", "76889.23000000", "77230.70000000"], [1789113600000, "77230.70000000", "77500.00000000", "76746.95000000", "77036.12000000"], [1789128000000, "77036.12000000", "79890.00000000", "76046.58000000", "77732.25000000"], [1789142400000, "77732.25000000", "78068.01000000", "76883.00000000", "77286.01000000"], [1789156800000, "77286.00000000", "77504.01000000", "76967.13000000", "77225.70000000"], [1789171200000, "77225.71000000", "77378.37000000", "77207.65000000", "77268.09000000"], [1789185600000, "77268.09000000", "77359.20000000", "77164.06000000", "77269.55000000"], [1789200000000, "77269.54000000", "77276.93000000", "77269.54000000", "77276.02000000"]]
+};
+function toCandles(raw){ return raw.map(k => ({ t:k[0], o:+k[1], h:+k[2], l:+k[3], c:+k[4] })); }
+const DATA = { "15m": toCandles(RAW["15m"]), "1h": toCandles(RAW["1h"]), "4h": toCandles(RAW["4h"]) };
+
+function renderCandles(containerId, interval, loId, hiId){
+  const candles = DATA[interval];
+  const el = document.getElementById(containerId);
+  const w = el.clientWidth || 200, h = el.clientHeight || 96;
+  const pad = 3;
+  const highs = candles.map(c=>c.h), lows = candles.map(c=>c.l);
+  const max = Math.max(...highs), min = Math.min(...lows);
+  const range = (max - min) || 1;
+  const n = candles.length;
+  const cw = (w - pad*2) / n;
+  const bodyW = Math.max(1, cw * 0.6);
+  function y(v){ return pad + (h - pad*2) * (1 - (v - min)/range); }
+  let svg = `<svg viewBox="0 0 ${w} ${h}" width="100%" height="100%" preserveAspectRatio="none">`;
+  candles.forEach((c,i)=>{
+    const x = pad + i*cw + cw/2;
+    const up = c.c >= c.o;
+    const color = up ? '#0ecb81' : '#f6465d';
+    const yO = y(c.o), yC = y(c.c), yH = y(c.h), yL = y(c.l);
+    const bodyTop = Math.min(yO,yC), bodyH = Math.max(1, Math.abs(yC-yO));
+    svg += `<line x1="${x}" y1="${yH}" x2="${x}" y2="${yL}" stroke="${color}" stroke-width="1"/>`;
+    svg += `<rect x="${x-bodyW/2}" y="${bodyTop}" width="${bodyW}" height="${bodyH}" fill="${color}"/>`;
+  });
+  svg += `</svg>`;
+  el.innerHTML = svg;
+  if(loId) document.getElementById(loId).textContent = min.toLocaleString(undefined,{maximumFractionDigits:0});
+  if(hiId) document.getElementById(hiId).textContent = max.toLocaleString(undefined,{maximumFractionDigits:0});
+}
+
+['spot','perp','quarterly'].forEach(key=>{
+  renderCandles('chart-'+key, '1h', 'chart-'+key+'-lo', 'chart-'+key+'-hi');
+});
+
+// ---------- OPTION CHAIN (illustrative — Binance MCP has no live options endpoint) ----------
+// SPOT_REF and STRIKES now derive from the CURRENTLY SELECTED asset's live price,
+// instead of being hardcoded to BTC.
+let SPOT_REF = 77284;
+let STRIKES = [];
+function rebuildStrikes(){
+  // 6 strikes spaced ±3%, ±6%, ±10% around the live reference price of the selected asset
+  const steps = [-0.10, -0.06, -0.03, 0.03, 0.06, 0.10];
+  STRIKES = steps.map(pct => Math.round((SPOT_REF * (1+pct)) / roundStep()) * roundStep());
+}
+function roundStep(){
+  // sensible rounding granularity depending on price magnitude (BTC vs ETH vs SOL etc.)
+  if(SPOT_REF >= 10000) return 1000;
+  if(SPOT_REF >= 1000) return 50;
+  if(SPOT_REF >= 100) return 5;
+  if(SPOT_REF >= 10) return 0.5;
+  return 0.05;
+}
+rebuildStrikes();
+function genChain(expiryKey){
+  // vary IV/OI slightly per expiry so tabs feel distinct
+  const seedMap = {'1226':1.0,'0127':1.08,'0327':1.22,'0627':1.4};
+  const seed = seedMap[expiryKey] || 1;
+  return STRIKES.map(strike=>{
+    const dist = Math.abs(strike - SPOT_REF) / SPOT_REF;
+    const baseIV = 42 + dist*140;
+    const callIV = (baseIV * seed).toFixed(1);
+    const putIV = (baseIV * seed * 1.03).toFixed(1);
+    const callOI = Math.round((3200 - dist*9000) * seed / 10) * 10;
+    const putOI = Math.round((2600 - dist*7000) * seed / 10) * 10;
+    return {
+      strike,
+      callIV, putIV,
+      callOI: Math.max(callOI, 40),
+      putOI: Math.max(putOI, 40),
+      atm: dist <= 0.015
+    };
+  });
+}
+function renderChain(expiryKey){
+  const rows = genChain(expiryKey);
+  const el = document.getElementById('oc-rows');
+  el.innerHTML = rows.map(r => `
+    <div class="oc-row ${r.atm ? 'atm' : ''}">
+      <span class="oc-call-iv">${r.callIV}%</span>
+      <span class="oc-call-oi">${r.callOI}</span>
+      <span class="oc-strike">${r.strike.toLocaleString()}</span>
+      <span class="oc-put-oi">${r.putOI}</span>
+      <span class="oc-put-iv">${r.putIV}%</span>
+    </div>`).join('');
+  // keep the summary strip in sync with the same seeded illustrative model
+  const maxPain = STRIKES[Math.floor(STRIKES.length/2)-1] || STRIKES[0];
+  document.getElementById('oc-maxpain') && (document.getElementById('oc-maxpain').textContent = maxPain.toLocaleString());
+  document.getElementById('oc-putcall') && (document.getElementById('oc-putcall').textContent = (0.6 + seedMapVal(expiryKey)*0.1).toFixed(2));
+}
+function seedMapVal(k){ return ({'1226':1.0,'0127':1.08,'0327':1.22,'0627':1.4})[k] || 1; }
+renderChain('1226');
+document.querySelectorAll('.expiry-tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.expiry-tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    renderChain(tab.getAttribute('data-exp'));
+  });
+});
+
+document.querySelectorAll('.interval-group').forEach(group=>{
+  const chartKey = group.getAttribute('data-chart');
+  group.querySelectorAll('.interval-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      group.querySelectorAll('.interval-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      // spot/perp/quarterly charts pull live klines for the CURRENT asset on every interval click
+      if(typeof refreshChartFor === 'function'){
+        refreshChartFor(chartKey, btn.getAttribute('data-int'));
+      } else {
+        renderCandles('chart-'+chartKey, btn.getAttribute('data-int'), 'chart-'+chartKey+'-lo', 'chart-'+chartKey+'-hi');
+      }
+    });
+  });
+});
+
+function toggleDropdown(id, pillEl){
+  const dd = document.getElementById(id);
+  const isOpen = dd.classList.contains('show');
+  document.querySelectorAll('.dropdown-list').forEach(d=>d.classList.remove('show'));
+  document.querySelectorAll('.select-pill').forEach(p=>p.classList.remove('open'));
+  if(!isOpen){ dd.classList.add('show'); pillEl.classList.add('open'); }
+}
+document.addEventListener('click', (e)=>{
+  if(!e.target.closest('.select-pill')){
+    document.querySelectorAll('.dropdown-list').forEach(d=>d.classList.remove('show'));
+    document.querySelectorAll('.select-pill').forEach(p=>p.classList.remove('open'));
+  }
+});
+function pickAsset(e, sym){
+  e.stopPropagation();
+  document.querySelectorAll('#ddAsset .dropdown-item').forEach(i=>i.classList.remove('sel'));
+  e.currentTarget.classList.add('sel');
+  document.querySelector('#pillAsset span:nth-child(2)').textContent = sym;
+  CURRENT_ASSET = sym;
+  if(typeof switchSymbol === 'function') switchSymbol();
+}
+function pickQuote(e, q){
+  e.stopPropagation();
+  document.querySelectorAll('#ddQuote .dropdown-item').forEach(i=>i.classList.remove('sel'));
+  e.currentTarget.classList.add('sel');
+  document.querySelector('#pillQuote span:first-child').textContent = '/'+q;
+  CURRENT_QUOTE = q;
+  if(typeof switchSymbol === 'function') switchSymbol();
+}
+
+// ============ RIGHT SCREEN MINI CHARTS (illustrative) ============
+function svgWrap(el, w, h, inner){
+  el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" width="100%" height="100%" preserveAspectRatio="none">${inner}</svg>`;
+}
+
+// -- Donut / Pie (two-segment) --
+function renderDonut(id, pctGreen){
+  const el = document.getElementById(id);
+  if(!el) return;
+  const w = el.clientWidth || 100, h = el.clientHeight || 58;
+  const cx = w/2, cy = h/2, r = Math.min(w,h)/2 - 4;
+  const C = 2*Math.PI*r;
+  const greenLen = C * (pctGreen/100);
+  const inner = `
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#f6465d" stroke-width="8"/>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#0ecb81" stroke-width="8"
+      stroke-dasharray="${greenLen} ${C-greenLen}" stroke-dashoffset="${C*0.25}" transform="rotate(0 ${cx} ${cy})"/>
+    <circle cx="${cx}" cy="${cy}" r="${r-9}" fill="#0d1116"/>
+  `;
+  svgWrap(el, w, h, inner);
+}
+
+// -- Sparkline (line + area) --
+function renderSparkline(id, values, color){
+  const el = document.getElementById(id);
+  if(!el) return;
+  const w = el.clientWidth || 100, h = el.clientHeight || 58, pad = 4;
+  const max = Math.max(...values), min = Math.min(...values);
+  const range = (max-min) || 1;
+  const n = values.length;
+  const stepX = (w - pad*2) / (n-1);
+  const pts = values.map((v,i)=>{
+    const x = pad + i*stepX;
+    const y = pad + (h-pad*2) * (1 - (v-min)/range);
+    return [x,y];
+  });
+  const linePath = pts.map((p,i)=> (i===0?'M':'L')+p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
+  const areaPath = linePath + ` L${pts[pts.length-1][0].toFixed(1)},${h-pad} L${pts[0][0].toFixed(1)},${h-pad} Z`;
+  const inner = `
+    <path d="${areaPath}" fill="${color}" opacity="0.12"/>
+    <path d="${linePath}" fill="none" stroke="${color}" stroke-width="1.6"/>
+  `;
+  svgWrap(el, w, h, inner);
+}
+
+// -- Grouped bars (two series) --
+function renderGroupedBars(id, seriesA, seriesB, colorA, colorB){
+  const el = document.getElementById(id);
+  if(!el) return;
+  const w = el.clientWidth || 100, h = el.clientHeight || 58, pad = 3;
+  const max = Math.max(...seriesA, ...seriesB) || 1;
+  const n = seriesA.length;
+  const groupW = (w - pad*2) / n;
+  const barW = groupW * 0.32;
+  let inner = '';
+  for(let i=0;i<n;i++){
+    const xA = pad + i*groupW + groupW*0.14;
+    const xB = xA + barW + 1.5;
+    const hA = (seriesA[i]/max) * (h - pad*2);
+    const hB = (seriesB[i]/max) * (h - pad*2);
+    inner += `<rect x="${xA}" y="${h-pad-hA}" width="${barW}" height="${hA}" fill="${colorA}"/>`;
+    inner += `<rect x="${xB}" y="${h-pad-hB}" width="${barW}" height="${hB}" fill="${colorB}"/>`;
+  }
+  svgWrap(el, w, h, inner);
+}
+
+// -- Skew curve (single smooth line across strikes) --
+function renderSkew(id, values, color){
+  renderSparkline(id, values, color);
+}
+
+// render all right-screen visuals
+renderDonut('donut-spot', 51);
+renderSparkline('line-inflow', [64,120,311,90,40,-60,-180,-120,-30,60,150,240,300], '#f0b90b');
+renderSparkline('line-funding', [0.0087,0.0055,0.0089,0.0072,0.0011,0.0004,0.0068,0.0091,0.0085,0.0055,0.0043], '#f0b90b');
+renderSparkline('line-basis', [61000,65000,74000,78000,79800,78200,77900,78600,79000,78700,78741], '#0ecb81');
+renderGroupedBars('bars-ls', [70,58,52,55,60,65,63], [30,42,48,45,40,35,37], '#0ecb81','#f6465d');
+renderGroupedBars('bars-oi', [1150,1180,1200,1120,1080,1020,980], [860,880,900,870,850,820,810], '#f0b90b','#5c6470');
+renderDonut('pie-options', 57);
+renderSkew('skew-curve', [58,52,47,44,48.6,53,60,68], '#f6465d');
+
+// ============ ALIGN LEFT & RIGHT PANEL ROWS ============
+function alignPanelRows(){
+  const cols = document.querySelectorAll('.screen-col .sections-scroll');
+  if(cols.length < 2) return;
+  const leftSections = cols[0].children;
+  const rightSections = cols[1].children;
+  const n = Math.min(leftSections.length, rightSections.length);
+  for(let i=0;i<n;i++){
+    leftSections[i].style.height = 'auto';
+    rightSections[i].style.height = 'auto';
+  }
+  // force reflow then measure
+  requestAnimationFrame(()=>{
+    for(let i=0;i<n;i++){
+      const h = Math.max(leftSections[i].offsetHeight, rightSections[i].offsetHeight);
+      leftSections[i].style.height = h + 'px';
+      rightSections[i].style.height = h + 'px';
+    }
+  });
+}
+window.addEventListener('load', alignPanelRows);
+setTimeout(alignPanelRows, 60);
+window.addEventListener('resize', alignPanelRows);
+
+// ============================================================
+// LIVE ENGINE — WebSocket streams for real-time push data (spot
+// ticker, perp/quarterly mark price+funding), REST only for the
+// things that have no stream (OI, long/short ratio, klines).
+// All of this runs in the USER's browser after the file is opened
+// locally — that's a different network/IP than this sandbox, so
+// CORS + WS connectivity work here even though direct fetches were
+// geo-blocked (451) from the machine that built this file.
+// ============================================================
+
+// ===== DATA CACHING & FALLBACK SYSTEM =====
+const dataCache = {
+  spot: {},
+  perp: {},
+  quarterly: {},
+  klines: {}
+};
+
+function cacheData(key, data) {
+  dataCache[key.split('.')[0]][key] = data;
+  localStorage.setItem('binance_cache_' + key, JSON.stringify(data));
+}
+
+function getCachedData(key) {
+  return dataCache[key.split('.')[0]][key] || 
+         (() => { try { return JSON.parse(localStorage.getItem('binance_cache_' + key)); } catch(e) { return null; } })();
+}
+
+let CURRENT_ASSET = 'BTC';
+let CURRENT_QUOTE = 'USDT';
+let quarterlySymbolCache = {};
+let spotWS = null, perpWS = null, quarterlyWS = null;
+let restPollTimer = null;
+let apiErrorCount = 0;
+
+function fmtCompact(n){
+  if(n >= 1e9) return (n/1e9).toFixed(2)+'B';
+  if(n >= 1e6) return (n/1e6).toFixed(2)+'M';
+  if(n >= 1e3) return (n/1e3).toFixed(2)+'K';
+  return n.toFixed(2);
+}
+function setFlag(id, ok, label){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.innerHTML = ok
+    ? '<span class="live-dot"></span>' + (label || 'LIVE')
+    : '<span class="live-dot" style="background:#f6465d;"></span>OFFLINE';
+  el.style.color = ok ? '#0ecb81' : '#f6465d';
+}
+function pairSymbol(){ return CURRENT_ASSET + CURRENT_QUOTE; }
+
+// ---------------- SPOT WebSocket: <symbol>@ticker ----------------
+function resetSpotFields(){
+  document.getElementById('spot-price').textContent = '—';
+  const chEl = document.getElementById('spot-change');
+  chEl.textContent = '—'; chEl.style.color = '#848e9c';
+  document.getElementById('spot-high').textContent = '—';
+  document.getElementById('spot-low').textContent = '—';
+  document.getElementById('spot-volbtc').textContent = '—';
+  document.getElementById('spot-volusdt').textContent = '—';
+}
+function connectSpotWS(){
+  if(spotWS){ spotWS.onclose = null; spotWS.onmessage = null; spotWS.close(); }
+  resetSpotFields();
+  const symbol = pairSymbol().toLowerCase();
+  try {
+    spotWS = new WebSocket('wss://stream.binance.com:9443/ws/'+symbol+'@ticker');
+    spotWS.onopen = ()=> {
+      setFlag('flag-spot', true, 'LIVE · WS');
+      apiErrorCount = 0;
+    };
+    spotWS.onmessage = (ev)=>{
+      try {
+        const d = JSON.parse(ev.data);
+        const price = parseFloat(d.c), chg = parseFloat(d.P);
+        document.getElementById('spot-price').textContent = price.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+        const chEl = document.getElementById('spot-change');
+        chEl.textContent = (chg>=0?'+':'')+chg.toFixed(2)+'%';
+        chEl.style.color = chg>=0 ? '#0ecb81' : '#f6465d';
+        document.getElementById('spot-high').textContent = parseFloat(d.h).toLocaleString(undefined,{maximumFractionDigits:0});
+        document.getElementById('spot-low').textContent = parseFloat(d.l).toLocaleString(undefined,{maximumFractionDigits:0});
+        document.getElementById('spot-volbtc').textContent = parseFloat(d.v).toLocaleString(undefined,{maximumFractionDigits:2});
+        document.getElementById('spot-volusdt').textContent = fmtCompact(parseFloat(d.q));
+        document.getElementById('spot-pair').textContent = CURRENT_ASSET+'/'+CURRENT_QUOTE;
+        cacheData('spot.' + symbol, d);
+        setFlag('flag-spot', true, 'LIVE · WS');
+      } catch(e) {
+        console.warn('Spot data parse error:', e);
+      }
+    };
+    spotWS.onerror = (e)=> {
+      console.error('Spot WS error:', e);
+      apiErrorCount++;
+      setFlag('flag-spot', false);
+    };
+    spotWS.onclose = ()=> {
+      setFlag('flag-spot', false);
+      if(apiErrorCount < 5) {
+        setTimeout(connectSpotWS, 3000);
+      }
+    };
+  } catch(e) {
+    console.error('Spot WS connection error:', e);
+    setFlag('flag-spot', false);
+  }
+}
+
+// ---------------- PERP WebSocket: <symbol>@markPrice@1s ----------------
+function resetPerpFields(){
+  document.getElementById('perp-price').textContent = '—';
+  const fEl = document.getElementById('perp-funding');
+  fEl.textContent = '—'; fEl.className = 'metric-value';
+  document.getElementById('perp-oi').textContent = '—';
+  document.getElementById('perp-ls').textContent = '—';
+}
+function connectPerpWS(){
+  if(perpWS){ perpWS.onclose = null; perpWS.onmessage = null; perpWS.close(); }
+  resetPerpFields();
+  const symbol = pairSymbol().toLowerCase();
+  try {
+    perpWS = new WebSocket('wss://fstream.binance.com/ws/'+symbol+'@markPrice@1s');
+    perpWS.onopen = ()=> setFlag('flag-perp', true, 'LIVE · WS');
+    perpWS.onmessage = (ev)=>{
+      try {
+        const d = JSON.parse(ev.data);
+        const mark = parseFloat(d.p), funding = parseFloat(d.r) * 100;
+        if(!isFinite(mark)) return;
+        document.getElementById('perp-price').textContent = mark.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+        if(isFinite(funding)){
+          const fEl = document.getElementById('perp-funding');
+          fEl.textContent = funding.toFixed(4) + '%';
+          fEl.className = 'metric-value ' + (funding>=0?'up':'down');
+        }
+        cacheData('perp.' + symbol, d);
+        setFlag('flag-perp', true, 'LIVE · WS');
+      } catch(e) {
+        console.warn('Perp data parse error:', e);
+      }
+    };
+    perpWS.onerror = (e)=> {
+      console.error('Perp WS error:', e);
+      setFlag('flag-perp', false);
+    };
+    perpWS.onclose = ()=> {
+      setFlag('flag-perp', false);
+      if(apiErrorCount < 5) setTimeout(connectPerpWS, 3000);
+    };
+  } catch(e) {
+    console.error('Perp WS connection error:', e);
+    setFlag('flag-perp', false);
+  }
+}
+
+// ---------------- QUARTERLY: discover symbol via REST once, then WS markPrice ----------------
+function resetQuarterlyFields(){
+  document.getElementById('quarterly-label').textContent = '📅 —';
+  document.getElementById('quarterly-price').textContent = '—';
+  const bEl = document.getElementById('quarterly-basis');
+  bEl.textContent = 'Basis —'; bEl.style.color = '#848e9c';
+  document.getElementById('quarterly-structure').textContent = '—';
+  document.getElementById('quarterly-annualized').textContent = '—';
+  document.getElementById('quarterly-oi').textContent = '—';
+  const expEl = document.getElementById('quarterly-expiry');
+  if(expEl) expEl.textContent = '—';
+}
+async function connectQuarterlyWS(){
+  const pair = pairSymbol();
+  resetQuarterlyFields();
+  if(quarterlyWS){ quarterlyWS.onclose = null; quarterlyWS.onmessage = null; quarterlyWS.close(); quarterlyWS = null; }
+  try{
+    if(!quarterlySymbolCache[pair]){
+      const info = await fetch('https://fapi.binance.com/fapi/v1/exchangeInfo').then(r=>r.json());
+      const match = info.symbols.find(s => s.pair === pair && s.contractType === 'CURRENT_QUARTER' && s.status === 'TRADING');
+      if(!match){ quarterlySymbolCache[pair] = null; }
+      else quarterlySymbolCache[pair] = match.symbol;
+    }
+    const qSymbol = quarterlySymbolCache[pair];
+    if(!qSymbol){
+      // this asset genuinely has no quarterly-dated futures contract on Binance
+      document.getElementById('quarterly-label').textContent = '📅 N/A';
+      document.getElementById('quarterly-price').textContent = 'No contract';
+      document.getElementById('quarterly-basis').textContent = pair+' has no quarterly future';
+      setFlag('flag-quarterly', false, 'N/A');
+      return;
+    }
+    const expiryDigits = qSymbol.split('_')[1];
+    if(expiryDigits && expiryDigits.length===6){
+      const y='20'+expiryDigits.slice(0,2), m=expiryDigits.slice(2,4), day=expiryDigits.slice(4,6);
+      document.getElementById('quarterly-expiry').textContent = y+'-'+m+'-'+day;
+      document.getElementById('quarterly-label').textContent = '📅 '+m+'/'+y.slice(2);
+    }
+    quarterlyWS = new WebSocket('wss://fstream.binance.com/ws/'+qSymbol.toLowerCase()+'@markPrice@1s');
+    quarterlyWS.onopen = ()=> setFlag('flag-quarterly', true, 'LIVE · WS');
+    quarterlyWS.onmessage = (ev)=>{
+      try{
+        const d = JSON.parse(ev.data);
+        const qPrice = parseFloat(d.p);
+        if(!isFinite(qPrice)) return;
+        const spotPriceEl = document.getElementById('spot-price');
+        const spotPrice = parseFloat((spotPriceEl.textContent||'').replace(/,/g,'')) || qPrice;
+        const basisPct = ((qPrice - spotPrice) / spotPrice) * 100;
+        document.getElementById('quarterly-price').textContent = qPrice.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+        const bEl = document.getElementById('quarterly-basis');
+        bEl.textContent = 'Basis ' + (basisPct>=0?'+':'') + basisPct.toFixed(2) + '%';
+        bEl.style.color = basisPct>=0 ? '#0ecb81' : '#f6465d';
+        document.getElementById('quarterly-structure').textContent = basisPct>=0 ? 'Contango' : 'Backwardation';
+        document.getElementById('quarterly-annualized').textContent = (Math.abs(basisPct)*4).toFixed(1)+'%';
+        setFlag('flag-quarterly', true, 'LIVE · WS');
+      }catch(e){ console.warn('Quarterly data parse error:', e); }
+    };
+    quarterlyWS.onerror = ()=> setFlag('flag-quarterly', false);
+    quarterlyWS.onclose = ()=> setFlag('flag-quarterly', false);
+  }catch(e){
+    console.warn('Quarterly WS setup failed for', pair, e);
+    resetQuarterlyFields();
+    setFlag('flag-quarterly', false);
+  }
+}
+
+// ---------------- REST-only stats: OI + long/short (no WS stream exists) ----------------
+async function pollRestStats(){
+  const symbol = pairSymbol();
+  try{
+    const [oi, markR] = await Promise.all([
+      fetch('https://fapi.binance.com/fapi/v1/openInterest?symbol='+symbol).then(r=>r.json()),
+      fetch('https://fapi.binance.com/fapi/v1/premiumIndex?symbol='+symbol).then(r=>r.json())
+    ]);
+    const mark = parseFloat(markR.markPrice);
+    const oiBase = parseFloat(oi.openInterestAmount);
+    const oiValue = oiBase * mark;
+    if(isFinite(oiValue) && oiValue > 0){
+      document.getElementById('perp-oi').textContent = fmtCompact(oiValue) + ' ' + CURRENT_QUOTE;
+    } else {
+      document.getElementById('perp-oi').textContent = '—';
+    }
+  }catch(e){
+    document.getElementById('perp-oi').textContent = '—';
+  }
+  try{
+    const ls = await fetch('https://fapi.binance.com/futures/data/globalLongShortAccountRatio?symbol='+symbol+'&period=15m&limit=1').then(r=>r.json());
+    if(Array.isArray(ls) && ls[0]){
+      const longAcc = parseFloat(ls[0].longAccount) * 100;
+      const shortAcc = parseFloat(ls[0].shortAccount) * 100;
+      if(isFinite(longAcc) && isFinite(shortAcc)){
+        document.getElementById('perp-ls').textContent = longAcc.toFixed(0)+'/'+shortAcc.toFixed(0);
+      } else {
+        document.getElementById('perp-ls').textContent = '—';
+      }
+    } else {
+      document.getElementById('perp-ls').textContent = '—';
+    }
+  }catch(e){
+    document.getElementById('perp-ls').textContent = '—';
+  }
+}
+
+// ---------------- Live candlestick klines (per-asset, REST, refreshed on switch/interval) ----------------
+async function loadLiveKlines(interval){
+  const symbol = pairSymbol();
+  try{
+    const raw = await fetch('https://api.binance.com/api/v3/uiKlines?symbol='+symbol+'&interval='+interval+'&limit=48').then(r=>r.json());
+    return raw.map(k => ({ t:k[0], o:+k[1], h:+k[2], l:+k[3], c:+k[4] }));
+  }catch(e){
+    console.warn('Kline fetch failed for', symbol, interval, e);
+    return null;
+  }
+}
+async function refreshChartFor(chartKey, interval){
+  const candles = await loadLiveKlines(interval);
+  if(candles){ DATA[interval] = candles; }
+  renderCandles('chart-'+chartKey, interval, 'chart-'+chartKey+'-lo', 'chart-'+chartKey+'-hi');
+}
+
+// ---------------- Master switch: called on load + whenever asset/quote pill changes ----------------
+async function switchSymbol(){
+  const label = CURRENT_ASSET+'/'+CURRENT_QUOTE;
+  document.getElementById('spot-pair') && (document.getElementById('spot-pair').textContent = '₿ '+label);
+  document.getElementById('perp-pair') && (document.getElementById('perp-pair').textContent = '⚡ '+label);
+  document.getElementById('options-pair') && (document.getElementById('options-pair').textContent = '📊 '+CURRENT_ASSET+' Chain');
+  document.getElementById('news-pair') && (document.getElementById('news-pair').textContent = '₿ '+CURRENT_ASSET);
+  document.getElementById('right-top-pair') && (document.getElementById('right-top-pair').textContent = '₿ '+label+' • Analytics');
+  document.getElementById('ai-analyst-pair') && (document.getElementById('ai-analyst-pair').textContent = '₿ '+CURRENT_ASSET+' Full Report');
+  document.getElementById('spot-vol-label') && (document.getElementById('spot-vol-label').textContent = 'Vol ('+CURRENT_ASSET+')');
+  document.getElementById('inflow-title') && (document.getElementById('inflow-title').textContent = '24H Money Inflow ('+CURRENT_ASSET+')');
+  document.getElementById('oi-chart-title') && (document.getElementById('oi-chart-title').textContent = 'Open Interest ('+CURRENT_ASSET+')');
+
+  connectSpotWS();
+  connectPerpWS();
+  connectQuarterlyWS();
+  pollRestStats();
+  clearInterval(restPollTimer);
+  restPollTimer = setInterval(pollRestStats, 20000);
+  ['spot','perp','quarterly'].forEach(key=>{
+    const activeBtn = document.querySelector('.interval-group[data-chart="'+key+'"] .interval-btn.active') || document.querySelector('.interval-group[data-chart="'+key+'"] .interval-btn[data-int="1h"]');
+    const interval = activeBtn ? activeBtn.getAttribute('data-int') : '1h';
+    refreshChartFor(key, interval);
+  });
+
+  // pull a fresh reference price for the NEW asset so the option chain strikes,
+  // ATM marker and max-pain/put-call figures rebuild around the right symbol
+  try{
+    const priceR = await fetch('https://api.binance.com/api/v3/ticker/price?symbol='+pairSymbol()).then(r=>r.json());
+    const p = parseFloat(priceR.price);
+    if(p && !isNaN(p)){
+      SPOT_REF = p;
+      rebuildStrikes();
+      const activeExp = document.querySelector('.expiry-tab.active');
+      renderChain(activeExp ? activeExp.getAttribute('data-exp') : '1226');
+    }
+  }catch(e){
+    console.warn('Could not refresh option-chain reference price for', pairSymbol(), e);
+  }
+}
+switchSymbol();
+
+</script>
+</body>
+</html>
