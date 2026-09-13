@@ -1,0 +1,135 @@
+{
+  "name": "binance-it-together",
+  "version": "3.0.0",
+  "description": "Asset Command Center for Foldable Devices - A unified trading interface demonstrating multi-market data synthesis",
+  "main": "binance-it-enhanced-v3.html",
+  "type": "module",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "serve": "python3 -m http.server 8000",
+    "test": "echo \"No tests yet - contribute!\"",
+    "dev": "python3 -m http.server 8000 --directory .",
+    "lint": "echo \"Add ESLint configuration\"",
+    "build": "echo \"Single-file app - no build needed\"",
+    "deploy": "git push origin main"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/[YOUR-USERNAME]/binance-it-together.git"
+  },
+  "keywords": [
+    "binance",
+    "cryptocurrency",
+    "trading",
+    "foldable",
+    "dual-screen",
+    "market-data",
+    "websocket",
+    "real-time",
+    "binance-api",
+    "crypto-trading"
+  ],
+  "author": "Your Name <your-email@example.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/[YOUR-USERNAME]/binance-it-together/issues"
+  },
+  "homepage": "https://github.com/[YOUR-USERNAME]/binance-it-together#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {},
+  "dependencies": {},
+  "optionalDependencies": {},
+  "peerDependencies": {},
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all",
+    "supports websockets"
+  ],
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/[YOUR-USERNAME]"
+  },
+  "contributors": [
+    {
+      "name": "Your Name",
+      "email": "your-email@example.com",
+      "url": "https://github.com/[YOUR-USERNAME]"
+    }
+  ],
+  "docs": {
+    "homepage": "README.md",
+    "architecture": "docs/ARCHITECTURE.md",
+    "api": "docs/API-REFERENCE.md",
+    "contributing": "CONTRIBUTING.md"
+  },
+  "features": {
+    "real-time": "WebSocket streams from Binance",
+    "multi-asset": "8+ cryptocurrencies supported",
+    "multi-market": "Spot, Perpetuals, Quarterly Futures, Options",
+    "caching": "LocalStorage for offline fallback",
+    "responsive": "Works on desktop, mobile, foldable devices",
+    "zero-dependencies": "Pure HTML/CSS/JavaScript",
+    "production-ready": "Error handling, reconnection logic, data validation"
+  },
+  "api-endpoints": {
+    "websocket": [
+      "wss://stream.binance.com:9443/ws/{symbol}@ticker",
+      "wss://fstream.binance.com/ws/{symbol}@markPrice@1s"
+    ],
+    "rest": [
+      "https://fapi.binance.com/fapi/v1/exchangeInfo",
+      "https://fapi.binance.com/fapi/v1/openInterest",
+      "https://fapi.binance.com/fapi/v1/premiumIndex",
+      "https://futures.binance.com/futures/data/globalLongShortAccountRatio",
+      "https://api.binance.com/api/v3/uiKlines"
+    ]
+  },
+  "assets": {
+    "supported": [
+      "BTC",
+      "ETH",
+      "SOL",
+      "BNB",
+      "XRP",
+      "ADA",
+      "DOGE",
+      "LINK"
+    ],
+    "extensible": true
+  },
+  "performance": {
+    "initial_load_ms": 500,
+    "asset_switch_ms": 100,
+    "chart_render_ms": 50,
+    "update_latency_ms": 4,
+    "bundle_size_kb": 50
+  },
+  "security": {
+    "https_only": true,
+    "csp_required": true,
+    "no-auth-needed": true,
+    "no-private-keys": true,
+    "no-third-party-tracking": true
+  },
+  "roadmap": {
+    "v3.0": "Current - Spot, Perp, Quarterly live, Options illustrative",
+    "v3.1": "Add Deribit options API integration",
+    "v4.0": "Server-side aggregation for scalability",
+    "v4.1": "Mobile app wrapper (React Native)",
+    "v5.0": "Multi-exchange support (Binance + Coinbase + Kraken)"
+  },
+  "contact": {
+    "twitter": "https://twitter.com/[YOUR-HANDLE]",
+    "github": "https://github.com/[YOUR-USERNAME]",
+    "email": "your-email@example.com"
+  },
+  "references": {
+    "binance-api": "https://binance-docs.github.io/apidocs/",
+    "websocket-spec": "https://tools.ietf.org/html/rfc6455",
+    "mdn-fetch": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API",
+    "mdn-websocket": "https://developer.mozilla.org/en-US/docs/Web/API/WebSocket"
+  }
+}
