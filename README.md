@@ -1,9 +1,15 @@
 # BINANCE IT TOGETHER
-## Asset Command Center for Foldable Devices
+Asset Command Center for Foldable Devices
+## Screenshots
 
-![Version](https://img.shields.io/badge/version-3.0-blue.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Status](https://img.shields.io/badge/status-production--ready-brightgreen.svg)
+![Demo](demo.png)
+
+
+![Demo 1](demo%201.png)
+
+
+![Demo 2](demo%202.png)
+
 
 **A unified trading interface demonstrating how to synthesize multi-market data across Spot, Perpetuals, Quarterly Futures, and Options on dual-screen foldable devices.**
 
