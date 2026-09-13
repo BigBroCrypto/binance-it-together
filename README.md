@@ -1,6 +1,5 @@
 # BINANCE IT TOGETHER
 Asset Command Center for Foldable Devices
-## Screenshots
 
 ![Demo](demo.png)
 
