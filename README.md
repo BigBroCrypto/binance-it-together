@@ -1,3 +1,12 @@
+## Files
+
+- **binance-it-together.html** - Main application
+- **screenshots/** - Demo images  
+- **ARCHITECTURE.md** - Technical documentation
+- **LICENSE** - MIT License
+- **package.json** - Project metadata
+
+
 # BINANCE IT TOGETHER
 Asset Command Center for Foldable Devices
 
