@@ -516,13 +516,7 @@ If this project helped you, please:
 
 This is a demonstration project. Not investment advice. Not financial services.
 Use at your own risk. See LICENSE for full terms.
-
 ---
-
-**Version:** 3.0  
-**Last Updated:** September 12, 2026  
 **Status:** Production-Ready ✅
-
 ---
-
-**Ready to solve trader problems? Build with me us.** 🚀
+**Ready to solve trader problems? Build with us.** 🚀
